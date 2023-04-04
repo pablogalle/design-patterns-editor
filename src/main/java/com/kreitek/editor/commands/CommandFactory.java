@@ -2,8 +2,10 @@ package com.kreitek.editor.commands;
 
 import com.kreitek.editor.*;
 
+
 public class CommandFactory {
     private static final CommandParser commandParser = new CommandParser();
+
 
     public Command getCommand(String commandLine) throws BadCommandException, ExitException {
         String[] args = commandParser.parse(commandLine);
@@ -18,6 +20,7 @@ public class CommandFactory {
 
     private Command createUndoCommand() {
         // TODO create undo command
+
         return null;
     }
 

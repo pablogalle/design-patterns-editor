@@ -5,8 +5,8 @@ import com.kreitek.editor.Command;
 import java.util.ArrayList;
 
 public class UndoCommand implements Command {
-    private String lineBuffer;
-    private int position;
+    private final String lineBuffer;
+    private final int position;
 
     public UndoCommand(String previousLine, int position) {
         this.lineBuffer = previousLine;

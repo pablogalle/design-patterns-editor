@@ -26,6 +26,8 @@ public class ConsoleEditor implements Editor {
             String commandLine = waitForNewCommand();
             try {
                 Command command = commandFactory.getCommand(commandLine);
+                // Memento: Guardar documentLines antes de hacerles nada
+                saveToMemento();
                 command.execute(documentLines);
             } catch (BadCommandException e) {
                 printErrorToConsole("Bad command");
@@ -83,5 +85,14 @@ public class ConsoleEditor implements Editor {
     private void printToConsole(String message) {
         System.out.print(message);
     }
+
+    public Memento saveToMemento(){
+        return new Memento(documentLines);
+    }
+
+    public void restoreFromMemento(Memento memento){
+        documentLines = memento.getState();
+    }
+
 
 }
