@@ -1,21 +1,18 @@
 package com.kreitek.editor.commands;
 
 import com.kreitek.editor.Command;
+import com.kreitek.editor.MementoHistory;
 
 import java.util.ArrayList;
 
 public class UndoCommand implements Command {
-    private final String lineBuffer;
-    private final int position;
-
-    public UndoCommand(String previousLine, int position) {
-        this.lineBuffer = previousLine;
-        this.position = position;
+    private MementoHistory history;
+    public UndoCommand(MementoHistory history) {
+        this.history = history;
     }
 
     @Override
     public void execute(ArrayList<String> documentLines) {
-        documentLines.remove(position);
-        documentLines.add(position, lineBuffer);
+        history.undo(documentLines);
     }
 }

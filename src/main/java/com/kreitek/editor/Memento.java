@@ -3,7 +3,7 @@ package com.kreitek.editor;
 import java.util.ArrayList;
 
 public class Memento {
-    private ArrayList<String> state = new ArrayList<String>();
+    private final ArrayList<String> state;
 
     public Memento(ArrayList<String> state) {
         this.state = state;
