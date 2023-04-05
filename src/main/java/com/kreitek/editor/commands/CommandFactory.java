@@ -1,11 +1,11 @@
 package com.kreitek.editor.commands;
 
 import com.kreitek.editor.*;
+import com.kreitek.editor.memento.CareTaker;
 
 
 public class CommandFactory {
     private static final CommandParser commandParser = new CommandParser();
-    private final MementoHistory history = MementoHistory.getInstance();
     public Command getCommand(String commandLine) throws BadCommandException, ExitException {
         String[] args = commandParser.parse(commandLine);
         return switch (args[0]) {
@@ -18,12 +18,12 @@ public class CommandFactory {
     }
 
     private Command createUndoCommand() {
-        return new UndoCommand(history);
+        return new UndoCommand();
     }
 
     private Command createDeleteCommand(String lineNumber) {
         int number = Integer.parseInt(lineNumber);
-        return new DeleteCommand(number,history);
+        return new DeleteCommand(number);
     }
 
     private Command createUpdateCommand(String lineNumber, String text) {
@@ -32,6 +32,6 @@ public class CommandFactory {
     }
 
     private Command createAppendCommand(String text) {
-        return new AppendCommand(text, history);
+        return new AppendCommand(text);
     }
 }

@@ -1,7 +1,9 @@
 package com.kreitek.editor;
 
+import com.kreitek.editor.memento.Memento;
+import com.kreitek.editor.memento.CareTaker;
+import com.kreitek.editor.memento.MementoFactory;
 import com.kreitek.editor.commands.CommandFactory;
-import com.kreitek.editor.commands.UndoCommand;
 
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -19,7 +21,7 @@ public class ConsoleEditor implements Editor {
 
     private final CommandFactory commandFactory = new CommandFactory();
     private ArrayList<String> documentLines = new ArrayList<String>();
-
+    private final CareTaker history = CareTaker.getInstance();
     @Override
     public void run() {
         boolean exit = false;
@@ -28,6 +30,9 @@ public class ConsoleEditor implements Editor {
             try {
                 Command command = commandFactory.getCommand(commandLine);
                 command.execute(documentLines);
+                if (!command.getClass().getSimpleName().equals("UndoCommand")) {
+                    createRestorePoint();
+                }
             } catch (BadCommandException e) {
                 printErrorToConsole("Bad command");
             } catch (ExitException e) {
@@ -36,6 +41,12 @@ public class ConsoleEditor implements Editor {
             showDocumentLines(documentLines);
             showHelp();
         }
+    }
+
+    private void createRestorePoint() {
+        Memento memento = MementoFactory.getMemento();
+        memento.setState(documentLines);
+        history.add(memento);
     }
 
     private void showDocumentLines(ArrayList<String> textLines) {
